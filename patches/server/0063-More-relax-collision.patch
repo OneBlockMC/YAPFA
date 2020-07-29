@@ -1,0 +1,25 @@
+From 4c8fa53f4e7dddc0dc256b5d3ccf0fa9562024bf Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 00:17:36 +0100
+Subject: [PATCH] More relax collision
+
+---
+ src/main/java/net/minecraft/server/Entity.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
+index 902c98cf..4d732dd4 100644
+--- a/src/main/java/net/minecraft/server/Entity.java
++++ b/src/main/java/net/minecraft/server/Entity.java
+@@ -675,7 +675,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+             // Paper end
+ 
+             vec3d = this.a(vec3d, enummovetype);
+-            Vec3D vec3d1 = !this.requiredRelaxedCollisionCheck ? this.performCollision(vec3d) : this.performCollision(vec3d, 0.0625); // Tuinity - optimise collisions
++            Vec3D vec3d1 = this.performCollision(vec3d, 0.000001);
+             this.collidedOnSomething = !vec3d.equals(vec3d1); // Tuinity - optimise collisions
+ 
+             if (vec3d1.g() > 1.0E-7D) {
+-- 
+2.24.1.windows.2
+

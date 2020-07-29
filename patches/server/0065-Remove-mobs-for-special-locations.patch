@@ -1,0 +1,41 @@
+From 05ecadea0a601799f294b4eb52fd5d2d8a394dfb Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 00:32:52 +0100
+Subject: [PATCH] Remove mobs for special locations
+
+---
+ .../server/ChunkProviderGenerate.java          | 18 ------------------
+ 1 file changed, 18 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/ChunkProviderGenerate.java b/src/main/java/net/minecraft/server/ChunkProviderGenerate.java
+index 70f43c51..ef62596f 100644
+--- a/src/main/java/net/minecraft/server/ChunkProviderGenerate.java
++++ b/src/main/java/net/minecraft/server/ChunkProviderGenerate.java
+@@ -133,24 +133,6 @@ public class ChunkProviderGenerate extends ChunkGeneratorAbstract<GeneratorSetti
+ 
+     @Override
+     public List<BiomeBase.BiomeMeta> getMobsFor(EnumCreatureType enumcreaturetype, BlockPosition blockposition) {
+-        if (WorldGenerator.SWAMP_HUT.c(this.a, blockposition)) {
+-            if (enumcreaturetype == EnumCreatureType.MONSTER) {
+-                return WorldGenerator.SWAMP_HUT.e();
+-            }
+-
+-            if (enumcreaturetype == EnumCreatureType.CREATURE) {
+-                return WorldGenerator.SWAMP_HUT.f();
+-            }
+-        } else if (enumcreaturetype == EnumCreatureType.MONSTER) {
+-            if (WorldGenerator.PILLAGER_OUTPOST.a(this.a, blockposition)) {
+-                return WorldGenerator.PILLAGER_OUTPOST.e();
+-            }
+-
+-            if (WorldGenerator.OCEAN_MONUMENT.a(this.a, blockposition)) {
+-                return WorldGenerator.OCEAN_MONUMENT.e();
+-            }
+-        }
+-
+         return super.getMobsFor(enumcreaturetype, blockposition);
+     }
+ 
+-- 
+2.24.1.windows.2
+

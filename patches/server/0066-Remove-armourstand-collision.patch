@@ -1,0 +1,33 @@
+From cc8cb4b7eb6963294539213642f50102fdf80490 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 00:42:36 +0100
+Subject: [PATCH] Remove armourstand collision
+
+---
+ .../java/net/minecraft/server/EntityArmorStand.java    | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityArmorStand.java b/src/main/java/net/minecraft/server/EntityArmorStand.java
+index d35a0b2d..28da2df1 100644
+--- a/src/main/java/net/minecraft/server/EntityArmorStand.java
++++ b/src/main/java/net/minecraft/server/EntityArmorStand.java
+@@ -327,16 +327,6 @@ public class EntityArmorStand extends EntityLiving {
+ 
+     @Override
+     protected void collideNearby() {
+-        List<Entity> list = this.world.getEntities(this, this.getBoundingBox(), EntityArmorStand.bx);
+-
+-        for (int i = 0; i < list.size(); ++i) {
+-            Entity entity = (Entity) list.get(i);
+-
+-            if (this.h(entity) <= 0.2D) {
+-                entity.collide(this);
+-            }
+-        }
+-
+     }
+ 
+     @Override
+-- 
+2.24.1.windows.2
+
