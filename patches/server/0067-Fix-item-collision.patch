@@ -1,0 +1,25 @@
+From 5ebe5768d8804eb91dc6896354929a26332351b9 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 00:55:33 +0100
+Subject: [PATCH] Fix item collision
+
+---
+ src/main/java/net/minecraft/server/Entity.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
+index 4d732dd4..02487c85 100644
+--- a/src/main/java/net/minecraft/server/Entity.java
++++ b/src/main/java/net/minecraft/server/Entity.java
+@@ -675,7 +675,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+             // Paper end
+ 
+             vec3d = this.a(vec3d, enummovetype);
+-            Vec3D vec3d1 = this.performCollision(vec3d, 0.000001);
++            Vec3D vec3d1 = this.performCollision(vec3d, 0.0625);
+             this.collidedOnSomething = !vec3d.equals(vec3d1); // Tuinity - optimise collisions
+ 
+             if (vec3d1.g() > 1.0E-7D) {
+-- 
+2.24.1.windows.2
+
