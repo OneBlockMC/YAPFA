@@ -1,0 +1,73 @@
+From 6dda0d8c11c582c6b1bb68a329a32118d9d429bf Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Wed, 29 Jul 2020 23:57:05 +0100
+Subject: [PATCH] Remove spawning requirements
+
+---
+ .../net/minecraft/server/EntityAnimal.java    |  2 +-
+ .../net/minecraft/server/EntitySlime.java     | 21 +------------------
+ .../net/minecraft/server/EntitySquid.java     |  3 +--
+ 3 files changed, 3 insertions(+), 23 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityAnimal.java b/src/main/java/net/minecraft/server/EntityAnimal.java
+index 013db0c3..6f9055d1 100644
+--- a/src/main/java/net/minecraft/server/EntityAnimal.java
++++ b/src/main/java/net/minecraft/server/EntityAnimal.java
+@@ -85,7 +85,7 @@ public abstract class EntityAnimal extends EntityAgeable {
+     }
+ 
+     public static boolean b(EntityTypes<? extends EntityAnimal> entitytypes, GeneratorAccess generatoraccess, EnumMobSpawn enummobspawn, BlockPosition blockposition, Random random) {
+-        return generatoraccess.getType(blockposition.down()).getBlock() == Blocks.GRASS_BLOCK && generatoraccess.getLightLevel(blockposition, 0) > 8;
++        return generatoraccess.getLightLevel(blockposition, 0) > 8;
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/EntitySlime.java b/src/main/java/net/minecraft/server/EntitySlime.java
+index 2efc18df..9c55ddab 100644
+--- a/src/main/java/net/minecraft/server/EntitySlime.java
++++ b/src/main/java/net/minecraft/server/EntitySlime.java
+@@ -292,26 +292,7 @@ public class EntitySlime extends EntityInsentient implements IMonster {
+     }
+ 
+     public static boolean c(EntityTypes<EntitySlime> entitytypes, GeneratorAccess generatoraccess, EnumMobSpawn enummobspawn, BlockPosition blockposition, Random random) {
+-        if (generatoraccess.getWorldData().getType() == WorldType.FLAT && random.nextInt(4) != 1) {
+-            return false;
+-        } else {
+-            if (generatoraccess.getDifficulty() != EnumDifficulty.PEACEFUL) {
+-                BiomeBase biomebase = generatoraccess.getBiome(blockposition);
+-
+-                if (biomebase == Biomes.SWAMP && blockposition.getY() > 50 && blockposition.getY() < 70 && random.nextFloat() < 0.5F && random.nextFloat() < generatoraccess.Y() && generatoraccess.getLightLevel(blockposition) <= random.nextInt(8)) {
+-                    return a(entitytypes, generatoraccess, enummobspawn, blockposition, random);
+-                }
+-
+-                ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(blockposition);
+-                boolean flag = generatoraccess.getMinecraftWorld().paperConfig.allChunksAreSlimeChunks || SeededRandom.a(chunkcoordintpair.x, chunkcoordintpair.z, generatoraccess.getSeed(), generatoraccess.getMinecraftWorld().spigotConfig.slimeSeed).nextInt(10) == 0; // Spigot // Paper
+-
+-                if (random.nextInt(10) == 0 && flag && blockposition.getY() < 40) {
+-                    return a(entitytypes, generatoraccess, enummobspawn, blockposition, random);
+-                }
+-            }
+-
+-            return false;
+-        }
++        return true;
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/EntitySquid.java b/src/main/java/net/minecraft/server/EntitySquid.java
+index 92efe4e7..b2d3f63d 100644
+--- a/src/main/java/net/minecraft/server/EntitySquid.java
++++ b/src/main/java/net/minecraft/server/EntitySquid.java
+@@ -171,8 +171,7 @@ public class EntitySquid extends EntityWaterAnimal {
+     }
+ 
+     public static boolean b(EntityTypes<EntitySquid> entitytypes, GeneratorAccess generatoraccess, EnumMobSpawn enummobspawn, BlockPosition blockposition, Random random) {
+-        final double maxHeight = generatoraccess.getMinecraftWorld().paperConfig.squidMaxSpawnHeight > 0 ? generatoraccess.getMinecraftWorld().paperConfig.squidMaxSpawnHeight : generatoraccess.getSeaLevel(); // Paper
+-        return blockposition.getY() > generatoraccess.getMinecraftWorld().spigotConfig.squidSpawnRangeMin && blockposition.getY() < maxHeight; // Spigot // Paper
++        return true;
+     }
+ 
+     public void a(float f, float f1, float f2) {
+-- 
+2.24.1.windows.2
+

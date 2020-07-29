@@ -1,0 +1,31 @@
+From 20a40cf32cd8ef204460a51f4829a4a6ad6d1c19 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Wed, 29 Jul 2020 23:55:11 +0100
+Subject: [PATCH] Remove pathfinding from entities
+
+---
+ src/main/java/net/minecraft/server/EntityInsentient.java | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityInsentient.java b/src/main/java/net/minecraft/server/EntityInsentient.java
+index 916deddd..3e085a6f 100644
+--- a/src/main/java/net/minecraft/server/EntityInsentient.java
++++ b/src/main/java/net/minecraft/server/EntityInsentient.java
+@@ -683,12 +683,12 @@ public abstract class EntityInsentient extends EntityLiving {
+         this.world.getMethodProfiler().exit();
+         this.world.getMethodProfiler().enter("targetSelector");
+         co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.startTiming(); // Purpur
+-        this.targetSelector.doTick();
++        // this.targetSelector.doTick();
+         co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+         this.world.getMethodProfiler().enter("goalSelector");
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.startTiming(); // Purpur
+-        this.goalSelector.doTick();
++        // this.goalSelector.doTick();
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+         this.world.getMethodProfiler().enter("navigation");
+-- 
+2.24.1.windows.2
+

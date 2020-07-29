@@ -1,0 +1,38 @@
+From 689ac8db6e512d2f08be1741229b85521ce0a841 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Wed, 29 Jul 2020 23:58:04 +0100
+Subject: [PATCH] Remove nearbyRaid
+
+---
+ .../net/minecraft/server/PersistentRaid.java     | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/PersistentRaid.java b/src/main/java/net/minecraft/server/PersistentRaid.java
+index 8946cf95..20a3e8cc 100644
+--- a/src/main/java/net/minecraft/server/PersistentRaid.java
++++ b/src/main/java/net/minecraft/server/PersistentRaid.java
+@@ -183,20 +183,6 @@ public class PersistentRaid extends PersistentBase {
+ 
+     @Nullable
+     public Raid getNearbyRaid(BlockPosition blockposition, int i) {
+-        Raid raid = null;
+-        double d0 = (double) i;
+-        Iterator iterator = this.raids.values().iterator();
+-
+-        while (iterator.hasNext()) {
+-            Raid raid1 = (Raid) iterator.next();
+-            double d1 = raid1.getCenter().m(blockposition);
+-
+-            if (raid1.v() && d1 < d0) {
+-                raid = raid1;
+-                d0 = d1;
+-            }
+-        }
+-
+-        return raid;
++        return null;
+     }
+ }
+-- 
+2.24.1.windows.2
+
