@@ -1,0 +1,25 @@
+From 0bc9d5fdbfcd0aab030e6e54f7439d97786a7fec Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 15:59:54 +0100
+Subject: [PATCH] Up goal selector tick
+
+---
+ src/main/java/net/minecraft/server/EntityInsentient.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityInsentient.java b/src/main/java/net/minecraft/server/EntityInsentient.java
+index 04f8242d..6e4644a6 100644
+--- a/src/main/java/net/minecraft/server/EntityInsentient.java
++++ b/src/main/java/net/minecraft/server/EntityInsentient.java
+@@ -695,7 +695,7 @@ public abstract class EntityInsentient extends EntityLiving {
+         this.world.getMethodProfiler().enter("goalSelector");
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.startTiming(); // Purpur
+         if (this.getEntityType().getEnumCreatureType() == EnumCreatureType.CREATURE) {
+-            if (goalTick % 3 == 0) {
++            if (goalTick % 4 == 0) {
+                 this.goalSelector.doTick();
+             }
+             goalTick++;
+-- 
+2.24.1.windows.2
+
