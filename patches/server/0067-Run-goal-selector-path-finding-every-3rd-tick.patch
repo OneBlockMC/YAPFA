@@ -1,0 +1,37 @@
+From 874819ff583fdf23928f4236f001a9877f185103 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 14:54:19 +0100
+Subject: [PATCH] Run goal selector path finding every 3rd tick
+
+---
+ src/main/java/net/minecraft/server/EntityInsentient.java | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityInsentient.java b/src/main/java/net/minecraft/server/EntityInsentient.java
+index 44f15a27..04f8242d 100644
+--- a/src/main/java/net/minecraft/server/EntityInsentient.java
++++ b/src/main/java/net/minecraft/server/EntityInsentient.java
+@@ -662,6 +662,8 @@ public abstract class EntityInsentient extends EntityLiving {
+         }
+     }
+ 
++    private int goalTick = 0;
++
+     @Override
+     protected final void doTick() {
+         ++this.ticksFarFromPlayer;
+@@ -693,7 +695,10 @@ public abstract class EntityInsentient extends EntityLiving {
+         this.world.getMethodProfiler().enter("goalSelector");
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.startTiming(); // Purpur
+         if (this.getEntityType().getEnumCreatureType() == EnumCreatureType.CREATURE) {
+-            this.goalSelector.doTick();
++            if (goalTick % 3 == 0) {
++                this.goalSelector.doTick();
++            }
++            goalTick++;
+         }
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+-- 
+2.24.1.windows.2
+
