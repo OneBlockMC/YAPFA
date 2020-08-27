@@ -1,0 +1,41 @@
+From 453fd342ecb7c384aab1e3bb976e00b1c2c46364 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 30 Jul 2020 16:13:37 +0100
+Subject: [PATCH] Slow down mob spawning for chunks
+
+---
+ .../java/net/minecraft/server/ChunkProviderServer.java     | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+index e8bf6050..4f94297e 100644
+--- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
++++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+@@ -937,6 +937,8 @@ public class ChunkProviderServer extends IChunkProvider {
+     final it.unimi.dsi.fastutil.objects.Object2BooleanLinkedOpenHashMap<Chunk> pendingEntityTickingChunkChanges = new it.unimi.dsi.fastutil.objects.Object2BooleanLinkedOpenHashMap<>(16, 0.8f);
+     // Tuinity end - optimise chunk tick iteration
+ 
++    private int spawnMobsTick = 0;
++
+     private void tickChunks() {
+         long i = this.world.getTime();
+         long j = i - this.lastTickTime;
+@@ -1080,12 +1082,13 @@ public class ChunkProviderServer extends IChunkProvider {
+                                         difference = (minDiff == Integer.MAX_VALUE) ? 0 : minDiff;
+                                     }
+ 
+-                                    if (difference > 0) {
++                                    if (difference > 0 && spawnMobsTick % 2 == 0) {
+                                         int spawnCount = SpawnerCreature.spawnMobs(enumcreaturetype, this.world, chunk, blockposition, difference,
+-                                            this.world.paperConfig.perPlayerMobSpawns ? this.playerChunkMap::updatePlayerMobTypeMap : null);
++                                                this.world.paperConfig.perPlayerMobSpawns ? this.playerChunkMap::updatePlayerMobTypeMap : null);
+                                         worldMobCount[enumcreaturetype.ordinal()] += spawnCount;
+                                         // Paper end
+                                     }
++                                    spawnMobsTick++;
+                                 }
+                             }
+ 
+-- 
+2.24.1.windows.2
+

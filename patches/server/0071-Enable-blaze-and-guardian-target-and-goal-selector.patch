@@ -1,0 +1,52 @@
+From 41cd4a965b52b61358768df07afe68c1b2cb8615 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 27 Aug 2020 16:57:30 +0100
+Subject: [PATCH] Enable blaze and guardian target and goal selector
+
+---
+ .../minecraft/server/EntityInsentient.java    | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/EntityInsentient.java b/src/main/java/net/minecraft/server/EntityInsentient.java
+index 6e4644a6..6322240f 100644
+--- a/src/main/java/net/minecraft/server/EntityInsentient.java
++++ b/src/main/java/net/minecraft/server/EntityInsentient.java
+@@ -684,21 +684,24 @@ public abstract class EntityInsentient extends EntityLiving {
+         co.aikar.timings.MinecraftTimings.entityInsentientSensing.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+         this.world.getMethodProfiler().enter("targetSelector");
+-        // co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.startTiming(); // Purpur
+-        /*
+-        if (this.getEntityType().getEnumCreatureType() == EnumCreatureType.CREATURE) {
+-            this.targetSelector.doTick();
++        co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.startTiming(); // Purpur
++        if (this.getEntityType() == EntityTypes.GUARDIAN
++            || this.getEntityType() == EntityTypes.ELDER_GUARDIAN
++            || this.getEntityType() == EntityTypes.BLAZE) {
++                this.targetSelector.doTick();
+         }
+-        */
+-        // co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.stopTiming(); // Purpur
++        co.aikar.timings.MinecraftTimings.entityInsentientTargetSelector.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+         this.world.getMethodProfiler().enter("goalSelector");
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.startTiming(); // Purpur
+-        if (this.getEntityType().getEnumCreatureType() == EnumCreatureType.CREATURE) {
+-            if (goalTick % 4 == 0) {
+-                this.goalSelector.doTick();
+-            }
+-            goalTick++;
++        if (this.getEntityType().getEnumCreatureType() == EnumCreatureType.CREATURE
++            || this.getEntityType() == EntityTypes.GUARDIAN
++            || this.getEntityType() == EntityTypes.ELDER_GUARDIAN
++            || this.getEntityType() == EntityTypes.BLAZE) {
++                if (goalTick % 4 == 0) {
++                    this.goalSelector.doTick();
++                }
++                goalTick++;
+         }
+         co.aikar.timings.MinecraftTimings.entityInsentientGoalSelector.stopTiming(); // Purpur
+         this.world.getMethodProfiler().exit();
+-- 
+2.24.1.windows.2
+
