@@ -1,0 +1,87 @@
+From 83e5dc49ccc219da3fc3d122d51eb5e7b4dc05b0 Mon Sep 17 00:00:00 2001
+From: Joseph <joseph42@live.co.uk>
+Date: Thu, 27 Aug 2020 16:21:29 +0100
+Subject: [PATCH] Fix hoppers with composters
+
+---
+ .../minecraft/server/TileEntityHopper.java    | 45 ++++++++++++++++---
+ 1 file changed, 40 insertions(+), 5 deletions(-)
+
+diff --git a/src/main/java/net/minecraft/server/TileEntityHopper.java b/src/main/java/net/minecraft/server/TileEntityHopper.java
+index 0e5ee991..4a89257e 100644
+--- a/src/main/java/net/minecraft/server/TileEntityHopper.java
++++ b/src/main/java/net/minecraft/server/TileEntityHopper.java
+@@ -325,7 +325,6 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+ 
+     private boolean j() {
+         IInventory iinventory = this.k();
+-
+         if (iinventory == null) {
+             return false;
+         } else {
+@@ -612,11 +611,40 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+ 
+     @Nullable
+     private IInventory k() {
+-    	if(this.cachedPush != null)return this.cachedPush;
++        // start
++        if (!blockUnderWasComposter && this.cachedPush != null) {
++            return this.cachedPush;
++        }
++        // end
++
+         EnumDirection enumdirection = (EnumDirection) this.getBlock().get(BlockHopper.FACING);
+ 
+-        this.cachedPush = b(this.getWorld(), this.position.shift(enumdirection));
++        // start
++        BlockPosition shifted = this.position.shift(enumdirection);
++        BlockPosition checkedPosition = new BlockPosition(shifted.getX() + 0.5D, shifted.getY() + 0.5D, shifted.getZ() + 0.5D);
++        if (blockUnderWasComposter || !cachedPushAir) {
++            if (!world.isLoaded(checkedPosition)) return null;
++            IBlockData blockData = world.getType(checkedPosition);
++            Block block = blockData.getBlock();
++            if (block instanceof IInventoryHolder) {
++                this.cachedPush = ((IInventoryHolder) block).a(blockData, world, checkedPosition);
++                blockUnderWasComposter = true;
++            } else if (block.isTileEntity()) {
++                TileEntity tileEntity = world.getTileEntity(checkedPosition);
++                if (tileEntity instanceof IInventory) {
++                    IInventory inv = (IInventory) tileEntity;
++                    if (inv instanceof TileEntityChest && block instanceof BlockChest) {
++                        inv = BlockChest.getInventory((BlockChest) block, blockData, world, checkedPosition, true);
++                    }
++                    this.cachedPush = inv;
++                }
++            }
++        }
++        if (this.cachedPush == null) {
++            this.cachedPushAir = true;
++        }
+         return this.cachedPush;
++        // end
+     }
+ 
+     @Nullable
+@@ -748,10 +776,17 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+     
+     private IInventory cachedAbove = null;
+     private IInventory cachedPush = null;
++    private boolean cachedPushAir = false;
++    private boolean cachedPullAir = false;
++
++    private boolean blockUnderWasComposter = false;
+     
+     public void flushCaches() {
+-    	cachedAbove = null;
+-    	cachedPush = null;
++        cachedAbove = null;
++        cachedPush = null;
++        cachedPushAir = false;
++        cachedPullAir = false;
++        blockUnderWasComposter = false;
+     }
+     
+     // YAPFA end
+-- 
+2.24.1.windows.2
+
